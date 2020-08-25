@@ -12,7 +12,7 @@
 	<artifactId>gs-spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
-	<description>Demo project for access redis cluster</description>
+	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -24,12 +24,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-server</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,6 +35,18 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-dependencies</artifactId>
+				<version>${spring-boot-admin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>

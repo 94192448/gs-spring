@@ -1,8 +1,0 @@
-spring:
-  redis:
-    cluster:
-      nodes: chengdu-dev:7000,chengdu-dev:7001,chengdu-dev:7002
-    timeout: 500
-    jedis:
-      pool:
-        max-wait: 5000
