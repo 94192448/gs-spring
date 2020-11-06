@@ -10,13 +10,13 @@
 <script src="../js/jquery-3.4.1.min.js"></script>
 <script src="../js/xterm.js" charset="utf-8"></script>
 <script src="../js/webssh.js" charset="utf-8"></script>
-<script>
+<script th:inline="javascript">
     openTerminal( {
         operate:'connect',
-        host: 'node1',//IP
-        port: '22',//端口号
-        username: 'yzq',//用户名
-        password: 'yzq'//密码
+        host: [[${vm.host}]],//IP
+        port: [[${vm.port}]],//端口号
+        username: [[${vm.username}]],//用户名
+        password: [[${vm.password}]]//密码
     });
     function openTerminal(options){
         var client = new WSSHClient();
