@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
 /**
+ * 并行执行：前端传人sessionID列表，再批量执行
  * @author yangzq80@gmail.com
  * @date 2020-11-04
  */

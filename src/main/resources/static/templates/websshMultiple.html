@@ -1,29 +1,31 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${vm.host}">WebSSH</title>
+    <title th:text="${vm}">WebSSH</title>
     <link rel="stylesheet" href="../css/xterm.css" />
 </head>
 <body>
-<div id="terminal" style="width: 100%;height: 100%"></div>
+
+<div id="terminal0" style="width: 100%;height: 100%"></div>
+<div id="terminal1" style="width: 100%;height: 100%"></div>
 
 <script src="../js/jquery-3.4.1.min.js"></script>
 <script src="../js/xterm.js" charset="utf-8"></script>
 <script src="../js/webssh.js" charset="utf-8"></script>
 <script th:inline="javascript">
-    openTerminal( {
-        operate:'connect',
-        host: [[${vm.host}]],//IP
-        port: [[${vm.port}]],//端口号
-        username: [[${vm.username}]],//用户名
-        password: [[${vm.password}]],//密码
-        connectTimeout: [[${vm.connectTimeout}]]
-    });
-    function openTerminal(options){
+    var ips = [[${vm}]];
+
+    console.log(ips.length);
+    for(var i=0;i<ips.length;i++){
+        openTerminal(ips[i],i);
+
+    }
+
+    function openTerminal(options,i){
         var client = new WSSHClient();
         var term = new Terminal({
-            cols: [[${vm.cols}]],
-            rows: [[${vm.rows}]],
+            cols: 97,
+            rows: 37,
             cursorBlink: true, // 光标闪烁
             cursorStyle: "block", // 光标样式  null | 'block' | 'underline' | 'bar'
             scrollback: 800, //回滚
@@ -35,7 +37,7 @@
             //键盘输入时的回调函数
             client.sendClientData(data);
         });
-        term.open(document.getElementById('terminal'));
+        term.open(document.getElementById('terminal'+i));
         //在页面上显示连接中...
         term.write('Connecting...');
         //执行连接操作
@@ -58,6 +60,8 @@
             }
         });
     }
+
+
 </script>
 </body>
 </html>

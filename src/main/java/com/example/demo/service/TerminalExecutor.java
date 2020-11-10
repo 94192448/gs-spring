@@ -57,6 +57,9 @@ public class TerminalExecutor {
 
         TerminalSessionWrapper sessionWrapper = terminalSessionService.getTerminalSession(webSocketSession);
 
+        //更新session元数据信息
+        terminalSessionService.recordMeta(terminalVM,webSocketSession);
+
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -110,6 +113,12 @@ public class TerminalExecutor {
     }
 
     public void executeSshCommand(String sessionId, String cmd) throws IOException {
+
+        if (terminalSessionService.getTerminalSession(sessionId) == null){
+            log.error("Cannot execute null sessionId:{}",sessionId);
+            return;
+        }
+
         sshClientService.send(terminalSessionService.getTerminalSession(sessionId),cmd);
     }
 }
