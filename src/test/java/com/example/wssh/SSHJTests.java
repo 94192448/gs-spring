@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.wssh;
 
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;

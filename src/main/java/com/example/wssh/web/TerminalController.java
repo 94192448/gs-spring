@@ -1,7 +1,6 @@
-package com.example.demo.web;
+package com.example.wssh.web;
 
-import com.example.demo.po.OpenTerminalVM;
-import com.example.demo.po.TerminalVM;
+import com.example.wssh.po.OpenTerminalVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

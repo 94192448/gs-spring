@@ -1,7 +1,7 @@
-package com.example.demo.config;
+package com.example.wssh.config;
 
-import com.example.demo.web.TerminalWebSocketHandler;
-import com.example.demo.WebSocketTerminalHandshakeInterceptor;
+import com.example.wssh.web.TerminalWebSocketHandler;
+import com.example.wssh.WebSocketTerminalHandshakeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

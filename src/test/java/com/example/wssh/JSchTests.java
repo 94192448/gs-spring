@@ -1,12 +1,10 @@
-package com.example.demo;
+package com.example.wssh;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
+import com.jcraft.jsch.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -19,20 +17,18 @@ import static org.junit.Assert.assertNull;
 @Slf4j
 public class JSchTests extends SSHTestBase {
 
+    @Test
+    public void givenValidCredentials_whenConnectionIsEstablished_thenServerReturnsResponse() throws Exception {
+        String responseString = listFolderStructure(username, password, hostname, port, command);
 
+        log.info(responseString);
 
-@Test
-public void givenValidCredentials_whenConnectionIsEstablished_thenServerReturnsResponse() throws Exception{
-    String responseString =listFolderStructure(username,password,hostname,port,command);
-
-    log.info(responseString);
-
-    assertNotNull(responseString);
-}
+        assertNotNull(responseString);
+    }
 
     @Test(expected = Exception.class)
     public void givenInvalidCredentials_whenConnectionAttemptIsMade_thenServerReturnsErrorResponse() throws Exception {
-        String responseString =listFolderStructure("invalidUsername",password,hostname,port,command);
+        String responseString = listFolderStructure("invalidUsername", password, hostname, port, command);
 
         log.info(responseString);
 
@@ -60,7 +56,7 @@ public void givenValidCredentials_whenConnectionIsEstablished_thenServerReturnsR
             }
             String errorResponse = new String(errorResponseStream.toByteArray());
             response = new String(responseStream.toByteArray());
-            if(!errorResponse.isEmpty()) {
+            if (!errorResponse.isEmpty()) {
                 throw new Exception(errorResponse);
             }
         } finally {

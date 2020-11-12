@@ -1,9 +1,9 @@
-package com.example.demo.web;
+package com.example.wssh.web;
 
-import com.example.demo.po.BatchCommandVM;
-import com.example.demo.po.TerminalSessionMetaVM;
-import com.example.demo.service.TerminalExecutor;
-import com.example.demo.service.TerminalSessionService;
+import com.example.wssh.po.BatchCommandVM;
+import com.example.wssh.po.TerminalSessionMetaVM;
+import com.example.wssh.service.TerminalExecutor;
+import com.example.wssh.service.TerminalSessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +49,11 @@ public class TerminalAPIController {
             terminalExecutor.executeSshCommand(id, vm.getCommand() + "\r");
         }
 
+    }
+
+    @RequestMapping("/file")
+    public Set<String> transferFile() {
+
+        return terminalSessionService.apiSessionIDs();
     }
 }

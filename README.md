@@ -1,11 +1,13 @@
 # websocket ssh
 
 ## Features
-- 通过URL参数打开ssh web终端,URL参数可控制终端行列等属性便于iframe嵌入
+- SSH password授权支持,通过URL参数打开ssh web终端,URL参数可控制终端行列等属性便于iframe嵌入
+- SSH public-key授权支持,包括DSA RSA ECDSA Ed25519 keys
 - REST API查询session列表,批量操作指定终端
 - 多终端并行操作
 - 支持全屏终端
 - 终端窗口可调整大小
+- 文件传输支持
 ## URL Arguments
 通过URL参数打开终端
 ``` 
@@ -19,10 +21,20 @@ http://localhost:8080/wssh/api/session
 ``` 
 http://localhost:8080/wssh/api/session/ids
 ```
-通过sessionIds执行命令
+通过sessionIds批量执行命令
 ``` 
-curl -X POST http://localhost:8080/wssh/api/command -d '{"command":"ll", "sessionIds":["282cede890c440afbbfadb3846f53ef5","ff2acfb4bdad44e1969346aa99b925dc","3371d822df3145faa18f87a426b69137"]}' -H "Content-Type: application/json" 
+curl -X POST http://localhost:8080/wssh/api/command -d '{"command":"ll", 
+"sessionIds":["282cede890c440afbbfadb3846f53ef5","ff2acfb4bdad44e1969346aa99b925dc"]}' -H "Content-Type: application/json" 
 
+```
+通过sessionIds文件批量传输 , webssh不同于xshell桌面ssh工具能直接操作本地文件
+
+- scp-ext-put [source] [destination]  //将terminal server上[source]文件上传到远程ssh server [destination]
+- scp-ext-get [source] [destination]  //从远程ssh server上[source]文件下载到terminal server [destination]
+``` 
+
+curl -X POST http://localhost:8080/wssh/api/command -d '{"command":"scp-ext-put mytmps-a tmp/test-a", 
+"sessionIds":["cc9c3b8f56774737a036ec4f8db49e77"]}' -H "Content-Type: application/json" 
 ```
 
 ### How it works

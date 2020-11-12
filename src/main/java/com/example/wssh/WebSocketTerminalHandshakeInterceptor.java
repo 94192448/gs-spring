@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.wssh;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
@@ -24,7 +24,7 @@ public class WebSocketTerminalHandshakeInterceptor implements HandshakeIntercept
 
             String uuid = UUID.randomUUID().toString().replace("-","");
 
-            attributes.put(Constans.TERMINAL_SESSION_KEY, uuid);
+            attributes.put(ConfigConstants.TERMINAL_SESSION_KEY, uuid);
 
             log.debug("Initializing terminal sessionId:{}",uuid);
             return true;

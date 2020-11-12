@@ -1,11 +1,10 @@
-package com.example.demo.po;
+package com.example.wssh.po;
 
 import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.Session;
 import lombok.Data;
 import org.springframework.web.socket.WebSocketSession;
-
-import java.util.Map;
 
 /**
  * @author yangzq80@gmail.com
@@ -17,9 +16,11 @@ public class TerminalSessionWrapper {
 
     private WebSocketSession webSocketSession;
 
-    //private JSch jSch;
+    private Session jschSession;
 
     private Channel channel;
+
+    private ChannelSftp channelSftp;
 
     //Extends
     TerminalSessionMetaVM metaVM;

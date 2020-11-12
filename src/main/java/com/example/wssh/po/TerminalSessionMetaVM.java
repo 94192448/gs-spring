@@ -1,4 +1,4 @@
-package com.example.demo.po;
+package com.example.wssh.po;
 
 import lombok.Data;
 

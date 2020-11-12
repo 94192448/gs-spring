@@ -1,10 +1,7 @@
-package com.example.demo.service;
+package com.example.wssh.service.jsch;
 
-import com.example.demo.po.TerminalSessionWrapper;
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
+import com.example.wssh.po.TerminalSessionWrapper;
+import com.jcraft.jsch.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +53,20 @@ public class SshClientService {
         if (inputStream != null) {
             inputStream.close();
         }
+    }
+
+
+    public ChannelShell openShellChannel(Session session) throws JSchException {
+
+        Channel channel = session.openChannel("shell");
+
+        channel.connect(3000);
+
+        return (ChannelShell) channel;
+    }
+
+    public ChannelSftp openSftpChannel(Session session) throws JSchException {
+
+        return (ChannelSftp) session.openChannel("sftp");
     }
 }

@@ -1,8 +1,8 @@
-package com.example.demo.web;
+package com.example.wssh.web;
 
-import com.example.demo.po.TerminalVM;
-import com.example.demo.service.TerminalExecutor;
-import com.example.demo.service.TerminalSessionService;
+import com.example.wssh.po.TerminalVM;
+import com.example.wssh.service.TerminalExecutor;
+import com.example.wssh.service.TerminalSessionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +58,8 @@ public class TerminalWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
-        log.debug("The WebSocket connection has been closed - {}",terminalSessionService.getTerminalSessionId(webSocketSession));
         terminalExecutor.closeTerminal(webSocketSession);
+        log.debug("The WebSocket connection has been closed - {}",terminalSessionService.getTerminalSessionId(webSocketSession));
     }
 
     @Override
