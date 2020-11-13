@@ -31,11 +31,9 @@ public class TerminalSessionService {
         return terminalSessionsCache.keySet();
     }
 
-    public void initSession(TerminalSessionWrapper terminalSessionWrapper) {
+    public void initializeSession(TerminalSessionWrapper terminalSessionWrapper) {
 
-        terminalSessionWrapper.setTerminalSessionId(getTerminalSessionId(terminalSessionWrapper.getWebSocketSession()));
-
-        terminalSessionsCache.put(getTerminalSessionId(terminalSessionWrapper.getWebSocketSession()), terminalSessionWrapper);
+        terminalSessionsCache.put(terminalSessionWrapper.getTerminalSessionId(), terminalSessionWrapper);
     }
 
     /**
@@ -95,13 +93,13 @@ public class TerminalSessionService {
         }
     }
 
-    public void recordMeta(TerminalVM terminalVM, WebSocketSession webSocketSession) {
+    public void recordMeta(TerminalVM terminalVM, String sessionId) {
         TerminalSessionMetaVM metaVM = new TerminalSessionMetaVM();
-        metaVM.setSessionId(getTerminalSessionId(webSocketSession));
+        metaVM.setSessionId(sessionId);
         metaVM.setHost(terminalVM.getHost());
         metaVM.setStart(System.currentTimeMillis());
 
         sessionVMList.add(metaVM);
-        getTerminalSession(webSocketSession).setMetaVM(metaVM);
+        getTerminalSession(sessionId).setMetaVM(metaVM);
     }
 }

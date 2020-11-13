@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 @Service
 @Slf4j
-public class SshClientService {
+public class SshClientShell {
 
     public Session openConnection(String host, int port, String username, String password,int connectTimeout) throws JSchException {
 
@@ -30,7 +30,7 @@ public class SshClientService {
 
         session.setPassword(password);
 
-        session.connect(30000);
+        session.connect(connectTimeout);
 
         return session;
     }

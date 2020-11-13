@@ -1,10 +1,8 @@
 package com.example.wssh.service;
 
-import com.example.wssh.ConfigConstants;
 import com.example.wssh.po.TerminalSessionWrapper;
 import com.example.wssh.po.TerminalVM;
-import com.example.wssh.service.jsch.SshClientFileTransfer;
-import com.example.wssh.service.jsch.SshClientService;
+import com.example.wssh.service.jsch.SshClientShell;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -21,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * WebSocket实现ssh终端操作.使用{@link SshClientService}实现ssh操作
+ * WebSocket实现ssh终端操作.使用{@link SshClientShell}实现ssh操作
  * 与{@link TerminalSessionService}实现终端session管理
  *
  * @author yangzq80@gmail.com
@@ -32,10 +30,7 @@ import java.util.concurrent.Executors;
 public class TerminalExecutor {
 
     @Autowired
-    SshClientService sshClientService;
-
-    @Autowired
-    SshClientFileTransfer sshClientFileTransfer;
+    SshClientShell sshClientShell;
 
     @Autowired
     TerminalSessionService terminalSessionService;
@@ -48,40 +43,54 @@ public class TerminalExecutor {
 
         sessionWrapper.setWebSocketSession(webSocketSession);
 
-        terminalSessionService.initSession(sessionWrapper);
+        sessionWrapper.setTerminalSessionId(terminalSessionService.getTerminalSessionId(webSocketSession));
+
+        terminalSessionService.initializeSession(sessionWrapper);
 
     }
 
+    /**
+     * ssh返回信息输出到websocket
+     * @param webSocketSession
+     * @param buffer
+     * @throws IOException
+     */
     private void outputMessage(WebSocketSession webSocketSession, byte[] buffer) throws IOException {
 
         webSocketSession.sendMessage(new TextMessage(buffer));
 
     }
 
+    /**
+     * 打开ssh连接并等待响应
+     * @param terminalVM
+     * @param webSocketSession
+     * @throws Exception
+     */
     public void openSshConnection(TerminalVM terminalVM, WebSocketSession webSocketSession) throws Exception {
 
         TerminalSessionWrapper sessionWrapper = terminalSessionService.getTerminalSession(webSocketSession);
 
         //更新session元数据信息
-        terminalSessionService.recordMeta(terminalVM, webSocketSession);
+        terminalSessionService.recordMeta(terminalVM, sessionWrapper.getTerminalSessionId());
 
         executorService.execute(new Runnable() {
             @Override
             public void run() {
                 InputStream inputStream = null;
                 try {
-                    Session session = sshClientService.openConnection(terminalVM.getHost(), terminalVM.getPort(),
+                    Session session = sshClientShell.openConnection(terminalVM.getHost(), terminalVM.getPort(),
                             terminalVM.getUsername(), terminalVM.getPassword(), terminalVM.getConnectTimeout());
 
                     //Open the channel of shell
-                    Channel sshChannel = sshClientService.openShellChannel(session);
+                    Channel sshChannel = sshClientShell.openShellChannel(session);
 
                     sessionWrapper.setChannel(sshChannel);
 
                     sessionWrapper.setJschSession(session);
 
                     //For test
-                    sshClientService.send(sessionWrapper, "\r");
+                    sshClientShell.send(sessionWrapper, "\r");
 
                     inputStream = sshChannel.getInputStream();
                     byte[] buffer = new byte[1024];
@@ -112,34 +121,11 @@ public class TerminalExecutor {
 
     public void executeSshCommand(TerminalVM terminalVM, WebSocketSession webSocketSession) throws IOException {
 
-        sshClientService.send(terminalSessionService.getTerminalSession(webSocketSession), terminalVM.getCommand());
+        sshClientShell.send(terminalSessionService.getTerminalSession(webSocketSession), terminalVM.getCommand());
     }
 
     public void closeTerminal(WebSocketSession webSocketSession) {
         terminalSessionService.closeTerminalSession(webSocketSession);
     }
 
-    public void executeSshCommand(String sessionId, String cmd) {
-
-        TerminalSessionWrapper sessionWrapper = terminalSessionService.getTerminalSession(sessionId);
-
-        if (sessionWrapper == null) {
-            log.error("Cannot execute null sessionId:{}", sessionId);
-            return;
-        }
-
-        try {
-            // 文件传输使用自定义命令，传输到wssh server,远程ssh server只显示结果
-            if (cmd.toLowerCase().contains(ConfigConstants.CMD_FILE_EXT)) {
-
-                sshClientFileTransfer.sftpCopy(sessionWrapper, cmd);
-                cmd = "echo scp-ext success: " + cmd;
-            }
-
-            // Shell执行
-            sshClientService.send(sessionWrapper, cmd);
-        } catch (Exception e) {
-            log.error("Executing [{}] error: {}", cmd, e.getMessage());
-        }
-    }
 }

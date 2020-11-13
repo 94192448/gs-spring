@@ -27,10 +27,17 @@ curl -X POST http://localhost:8080/wssh/api/command -d '{"command":"ll",
 "sessionIds":["282cede890c440afbbfadb3846f53ef5","ff2acfb4bdad44e1969346aa99b925dc"]}' -H "Content-Type: application/json" 
 
 ```
-通过sessionIds文件批量传输 , webssh不同于xshell桌面ssh工具能直接操作本地文件
+通过sessionIds批量执行命令，并同步返回结果
+``` 
+curl -X POST http://localhost:8080/wssh/api/command/exec -d '{"command":"pwd", 
+"sessionIds":["282cede890c440afbbfadb3846f53ef5","ff2acfb4bdad44e1969346aa99b925dc"]}' -H "Content-Type: application/json" 
 
-- scp-ext-put [source] [destination]  //将terminal server上[source]文件上传到远程ssh server [destination]
-- scp-ext-get [source] [destination]  //从远程ssh server上[source]文件下载到terminal server [destination]
+```
+
+通过sessionIds在webssh server与远程ssh server文件批量传输
+
+- scp-ext-put [source] [destination]  //从terminal server[source]文件上传到远程ssh server [destination]
+- scp-ext-get [source] [destination]  //从远程ssh server[source]文件下载到terminal server [destination]
 ``` 
 
 curl -X POST http://localhost:8080/wssh/api/command -d '{"command":"scp-ext-put mytmps-a tmp/test-a", 

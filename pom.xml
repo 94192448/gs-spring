@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>gs-spring</artifactId>
+	<artifactId>webssh</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
@@ -34,11 +34,11 @@
 		</dependency>
 
 		<!--SSHJ-->
-		<dependency>
-			<groupId>com.hierynomus</groupId>
-			<artifactId>sshj</artifactId>
-			<version>0.30.0</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.hierynomus</groupId>-->
+<!--			<artifactId>sshj</artifactId>-->
+<!--			<version>0.30.0</version>-->
+<!--		</dependency>-->
 
 		<!--JSCH-->
 		<dependency>

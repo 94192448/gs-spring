@@ -10,4 +10,5 @@ public class ConfigConstants {
     public static final String CMD_FILE_EXT = "scp-ext";
     public static final String CMD_FILE_EXT_GET = "scp-ext-get";
     public static final String CMD_FILE_EXT_PUT = "scp-ext-put";
+
 }
