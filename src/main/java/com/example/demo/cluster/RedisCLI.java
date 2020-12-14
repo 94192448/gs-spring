@@ -1,6 +1,6 @@
 package com.example.demo.cluster;
 
-import com.example.demo.CliExecutor;
+import com.example.demo.AbstractCLIExecutor;
 import com.example.demo.CommandExec;
 import com.example.demo.cluster.po.Cluster;
 import com.example.demo.cluster.po.Node;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author yangzq80@gmail.com
  * @date 2020-12-08
  */
-public class RedisCli extends CliExecutor {
+public class RedisCLI extends AbstractCLIExecutor {
 
     @Override
     public void execute(CommandLine line) {

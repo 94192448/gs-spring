@@ -1,14 +1,13 @@
 package com.example.demo;
 
-import com.example.demo.cluster.RabbitMQCli;
-import com.example.demo.cluster.RedisCli;
+import com.example.demo.cluster.*;
 import org.apache.commons.cli.*;
 
 /**
  * @author yangzq80@gmail.com
  * @date 2020-12-07
  */
-public class ClusterCli {
+public class ClusterCLI {
 
     public static void main(String[] args) {
 
@@ -24,7 +23,11 @@ public class ClusterCli {
         Options options = new Options();
         options.addOption("help", "help", false, "help command list .");
 
-        options.addOption("t", "type", true, "redis,rabbitmq,zookeeper");
+        options.addOption("redis", "redis", false, "--redis [--h=127.0.0.1 --p=3379 --cli=./redis-cli]");
+        options.addOption("rabbit", "rabbitmq", false, "--rabbitmq [--h=rabbit@host]");
+        options.addOption("es", "elasticsearch", false, "--elasticsearch");
+        options.addOption("fastdfs", "fastdfs", false, "--fastdfs [--cli=fdfs_monitor /etc/fdfs/client.conf]");
+        options.addOption("zk", "zookeeper", false, "--zookeeper [--cli=zkServer.sh status]");
 
         options.addOption(Option.builder().longOpt("h").hasArg().desc("hostname").build());
         options.addOption(Option.builder().longOpt("p").hasArg().desc("port").build());
@@ -37,22 +40,27 @@ public class ClusterCli {
             if (line.hasOption("help")) {
                 new HelpFormatter().printHelp("help", options);
             }
-            // validate that block-size has been set
-            if (line.hasOption("t")) {
-                // print the value of block-size
-                String type = line.getOptionValue("type");
 
-                if ("redis".equalsIgnoreCase(type)) {
+            if (line.hasOption("redis")) {
 
-                    new RedisCli().execute(line);
-                }
+                new RedisCLI().execute(line);
+            }
 
-                if ("rabbitmq".equalsIgnoreCase(type)) {
+            if (line.hasOption("rabbitmq")) {
 
-                    new RabbitMQCli().execute(line);
-                }
-            }else {
-                System.out.println("Undefined --type");
+                new RabbitMQCLI().execute(line);
+            }
+
+            if (line.hasOption("elasticsearch")) {
+                new ElasticsearchCLI().execute(line);
+            }
+            if (line.hasOption("fastdfs")) {
+
+                new FastDFSCLI().execute(line);
+            }
+            if (line.hasOption("zk")) {
+
+                new ZookeeperCLI().execute(line);
             }
         } catch (ParseException exp) {
             System.out.println("Unexpected exception:" + exp.getMessage());

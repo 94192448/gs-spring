@@ -10,6 +10,7 @@ public class Node{
     private String role;
     private String health="UP";
     private String pid;
+    private String des;
 
     public String getId() {
         return id;
@@ -51,4 +52,12 @@ public class Node{
         this.pid = pid;
     }
 
+
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
 }

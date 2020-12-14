@@ -14,6 +14,8 @@ public class Cluster {
 
     private List<Node> nodes;
 
+    private String des;
+
     public Cluster(String name, String health,  List<Node> nodes) {
         this.name = name;
         this.health = health;
@@ -44,6 +46,12 @@ public class Cluster {
         this.nodes = nodes;
     }
 
+    public String getDes() {
+        return des;
+    }
 
+    public void setDes(String des) {
+        this.des = des;
+    }
 }
 
