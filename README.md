@@ -2,10 +2,12 @@
 
 Serving Static Web Content with Spring Boot
 
-# Feature
+# Features
 - static resources
 
 # Build
 ```
 mvn clean package -DskipTests
 ```
+
+# Testing
