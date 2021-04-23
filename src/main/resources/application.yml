@@ -1,2 +1,8 @@
 server:
-  port: 0
+  port: 80
+spring:
+  rabbitmq:
+    host: localhost
+    username: admin
+    password: admin
+    publisher-confirms: true #确认消息已发送到交换机(Exchange)
