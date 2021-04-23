@@ -1,6 +1,6 @@
 # gs-springboot
 
-Serving Static Web Content with Spring Boot
+This POM file for a JAR project runs JUnit tests under code coverage and creates a coverage report (target/site/jacoco/index.html).
 
 # Feature
 - static resources
